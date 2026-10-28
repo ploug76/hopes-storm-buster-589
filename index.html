@@ -126,7 +126,7 @@ for(const side of[0,1])for(let i=0;i<2;i++){const x=side?W*.78:W*.02,y=H*.83+i*H
 function sinArt(s){const q=sinPos(s),w=Math.sin(t*.1+s.wob)*2*S,sc=S*(s.dive?1.1:1);g.save();g.translate(q.x,q.y+w);
 for(let i=0;i<6;i++){const a=i/6*TAU+t*.03;E(Math.cos(a)*18*sc,Math.sin(a)*8*sc,13*sc,11*sc,i%2?'#3b2d4f':'#4a3a5e')}E(0,0,22*sc,13*sc,s.hp>1?'#2a1d3a':'#43345a');
 E(-8*sc,-3*sc,3.5*sc,3*sc,'#fff');E(8*sc,-3*sc,3.5*sc,3*sc,'#fff');E(-7.5*sc,-2.5*sc,1.6*sc,1.6*sc,'#c33');E(8.5*sc,-2.5*sc,1.6*sc,1.6*sc,'#c33');g.strokeStyle='#111';g.lineWidth=1.8*sc;g.beginPath();g.moveTo(-12*sc,-8*sc);g.lineTo(-4*sc,-5.5*sc);g.moveTo(12*sc,-8*sc);g.lineTo(4*sc,-5.5*sc);g.moveTo(-5*sc,5*sc);g.quadraticCurveTo(0,2*sc,5*sc,5*sc);g.stroke();
-g.font=`bold ${9*sc}px sans-serif`;g.textAlign='center';g.textBaseline='middle';g.lineJoin='round';g.lineWidth=3*sc;g.strokeStyle='#1a1028';g.strokeText(s.w,0,14*sc,GAPX()*.95);g.fillStyle='#fff';g.fillText(s.w,0,14*sc,GAPX()*.95);g.restore()}
+g.font=`bold ${Math.max(9*sc,13*DPR)}px sans-serif`;g.textAlign='center';g.textBaseline='middle';g.lineJoin='round';g.lineWidth=3*sc;g.strokeStyle='#1a1028';g.strokeText(s.w,0,14*sc,GAPX()*.95);g.fillStyle='#fff';g.fillText(s.w,0,14*sc,GAPX()*.95);g.restore()}
 function hopeArt(x,y,sz,raise){const s=sz/40;g.save();g.translate(x,y+Math.abs(Math.sin(hope?hope.step*.3:0))*-1.5*s);
 g.globalAlpha=.35;E(0,-30*s,38*s,38*s,'#fff3b0');g.globalAlpha=1;E(0,26*s,16*s,4*s,'rgba(0,0,0,.2)');
 g.fillStyle='#ffd7b5';g.fillRect(-6*s,14*s,4*s,10*s);g.fillRect(2*s,14*s,4*s,10*s);E(-4*s,25*s,4*s,2.4*s,'#e35d6a');E(4*s,25*s,4*s,2.4*s,'#e35d6a');
@@ -145,12 +145,12 @@ function hud(){g.fillStyle='rgba(59,42,74,.88)';g.fillRect(0,0,W,58*S);const mw=
 g.fillText('❤️'.repeat(Math.max(0,hearts))+'🤍'.repeat(Math.max(0,3-hearts))+'  Level '+level,10*S,16*S,mw);g.fillText('Score '+score,10*S,38*S,mw);
 const bx=W*.5-40*S,bw=Math.min(110*S,mw-W*.5+40*S);g.fillStyle='rgba(255,255,255,.2)';g.fillRect(W-178*DPR-bw-8*S,32*S,bw,12*S);g.fillStyle=charge>=1?(t%20<10?'#ffe066':'#fff'):'#e0a526';g.fillRect(W-178*DPR-bw-8*S,32*S,bw*charge,12*S);
 g.font=`bold ${10*S}px sans-serif`;g.fillStyle='#fff';g.textAlign='center';g.fillText(charge>=1?'☀️ DOUBLE-TAP!':'☀️ Sun Blast',W-178*DPR-bw/2-8*S,24*S)}
-function draw(){g.save();if(shake)g.translate((R()-.5)*shake*.6*S,(R()-.5)*shake*.6*S);church();
-if(state=='title'){for(let i=0;i<5;i++){const s={k:i,r:0,w:SINS[(i*3+Math.floor(t/120))%SINS.length],wob:i,hp:1};form={x:0,y:H*.42+Math.sin(t*.04+i)*6*S};sinArt(s)}hopeArt(W/2,H*.72,78*S,t%160<60?1:0);
+function draw(){if(state!='title')try{if(window.__keepClear&&window.__keepClear.length)window.__keepClear=[]}catch(e){}g.save();if(shake)g.translate((R()-.5)*shake*.6*S,(R()-.5)*shake*.6*S);church();
+if(state=='title'){const tLand=W>H*1.3,tP=tLand?Math.max(H*.06,62*DPR):H*.06,tD=tP-H*.06;/* tap48: landscape panel starts below the 48px dock */try{window.__keepClear=tLand?[[W*.05/DPR,tP/DPR,W*.9/DPR,H*.15/DPR]]:[]}catch(e){}for(let i=0;i<5;i++){const s={k:i,r:0,w:SINS[(i*3+Math.floor(t/120))%SINS.length],wob:i,hp:1};form={x:0,y:H*.42+tD+Math.sin(t*.04+i)*6*S};sinArt(s)}hopeArt(W/2,H*.72,78*S,t%160<60?1:0);
 const hLand=W>H*1.3,hFs=Math.max(16*DPR,Math.min(13.5*S,W*.035));/* landscape: taller panel + two columns so the how-to text stays >=16px */
-g.fillStyle='rgba(255,250,235,.93)';g.beginPath();g.roundRect(W*.05,H*.06,W*.9,hLand?H*.33:H*.29,24*S);g.fill();g.strokeStyle='#e0a526';g.lineWidth=5*S;g.stroke();bounceTxt("Hope's",H*.11,34);bounceTxt('Storm Buster',H*.18,36);
+g.fillStyle='rgba(255,250,235,.93)';g.beginPath();g.roundRect(W*.05,tP,W*.9,hLand?H*.33:H*.29,24*S);g.fill();g.strokeStyle='#e0a526';g.lineWidth=5*S;g.stroke();bounceTxt("Hope's",H*.11+tD,34);bounceTxt('Storm Buster',H*.18+tD,36);
 const how=['Drag (or 🎮 arrows) to move Hope','Sunbeams fly up all by themselves! ☀️','Pop the grumpy storm clouds into sunshine','Dodge the gloomy raindrops — you have 3 ❤️','Full meter? DOUBLE-TAP for a Sun Blast! ☀️'];
-how.forEach((h,i)=>{g.fillStyle='#4a2a6a';g.font=`bold ${hFs}px "Comic Sans MS",sans-serif`;g.textAlign='center';if(hLand)g.fillText(h,W*(i<3?.285:.715),H*.25+(i%3)*hFs*1.25,W*.42);else g.fillText(h,W/2,H*.225+i*H*.025,W*.84)});
+how.forEach((h,i)=>{g.fillStyle='#4a2a6a';g.font=`bold ${hFs}px "Comic Sans MS",sans-serif`;g.textAlign='center';if(hLand)g.fillText(h,W*(i<3?.285:.715),H*.25+tD+(i%3)*hFs*1.25,W*.42);else g.fillText(h,W/2,H*.225+i*H*.025,W*.84)});
 if(t%60<42)txt('Tap to start!',W/2,H*.88,Math.max(26,16*DPR/S));if(best)txt('Best: '+best,W/2,H*.94,16,'#fff3c4');if(t%10==0)burst(W*.1+R()*W*.8,H*.05+R()*H*.3,1);fx();drawFx();g.restore();return}
 for(const s of sins)if(s.alive)sinArt(s);for(const sh of shots)shotArt(sh);for(const p of prayers)prayerArt(p);
 if(blast){const a=1-blast.t/60;g.save();g.globalCompositeOperation='lighter';const gr=g.createRadialGradient(hope.x,hope.y-40*S,0,hope.x,hope.y-40*S,blast.r);gr.addColorStop(0,`rgba(255,250,210,${.7*a})`);gr.addColorStop(.8,`rgba(255,220,120,${.35*a})`);gr.addColorStop(1,'rgba(255,220,120,0)');g.fillStyle=gr;g.beginPath();g.arc(hope.x,hope.y-40*S,blast.r,0,TAU);g.fill();
@@ -433,4 +433,21 @@ let last=null;function place(){const D=window.__dock;let v=false;try{v=!!(D&&D.v
  b.style.display='none';last=null}
 setInterval(place,250);addEventListener('resize',place);setTimeout(place,50);
 if(window.__UNLOCK_BAD){const t=document.createElement('div');t.id='unlBad';t.setAttribute('role','alert');t.textContent='That unlock link didn’t work, so this is the free sample. Check the link from your receipt.';document.body.appendChild(t);setTimeout(()=>t.remove(),7000)}
-window.__unlock={unlocked:un,sample:window.__SAMPLE||null,get badge(){return last}}})()</script><!--/unlock--></body></html>
+window.__unlock={unlocked:un,sample:window.__SAMPLE||null,get badge(){return last}}})()</script><!--/unlock--><style id="tap48">/* Peter 10/28: button/text size round - tap targets 48px, labels 16px */
+#dock .dk{min-height:48px!important;height:48px!important;min-width:48px!important;font-size:16px!important;line-height:44px!important;border-radius:24px!important;padding:0 8px!important}
+#dock .dk.ic{padding:0!important}
+#dock .dk.ic,#dock .dk.ic~#lbBtn{min-width:48px!important;width:48px!important}
+#dockHint{font-size:16px!important;padding-right:58px!important;min-height:54px}
+#dockHintX{width:48px!important;height:48px!important;margin-top:-24px!important;border-radius:24px!important;font-size:18px!important}
+#smpBuy{height:48px!important;line-height:44px!important;font-size:16px!important;border-radius:24px!important}
+#smpLock .b{min-height:48px!important}
+#smpLock .lnk{display:flex!important;align-items:center;justify-content:center;min-height:48px!important;font-size:16px!important;margin-top:4px!important}
+#palbX{width:48px!important;height:48px!important;border-radius:24px!important}
+#palbCard h2{margin-left:56px!important;margin-right:56px!important}
+#palbCard .sub,#palbCard .note,#palbCard .err{font-size:16px!important}
+#palbCard .src{font-size:14px!important}
+#palbCard .b{min-height:48px!important}
+#palbTabs button{min-height:48px!important;font-size:16px!important}
+#palbList li{min-height:30px;height:auto!important;font-size:16px!important}
+</style>
+</body></html>
